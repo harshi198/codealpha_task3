@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        #music-player {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #player-controls {
+            margin-top: 10px;
+        }
+
+        #play-pause-btn {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #current-time,
+        #duration {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="music-player">
+        <h2>Music Player</h2>
+        <audio id="audio-player" controls>
+            <source src="C:\Users\sures\Downloads\butterflies-instrumental-12014.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div id="player-controls">
+            <button id="play-pause-btn">Play</button>
+            <div>
+                <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audio-player');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const currentTime = document.getElementById('current-time');
+        const duration = document.getElementById('duration');
+
+        function togglePlayPause() {
+            if (audioPlayer.paused || audioPlayer.ended) {
+                playPauseBtn.textContent = 'Pause';
+                audioPlayer.play();
+            } else {
+                playPauseBtn.textContent = 'Play';
+                audioPlayer.pause();
+            }
+        }
+
+        playPauseBtn.addEventListener('click', togglePlayPause);
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            const minutes = Math.floor(audioPlayer.currentTime / 60);
+            const seconds = Math.floor(audioPlayer.currentTime % 60);
+            const totalMinutes = Math.floor(audioPlayer.duration / 60);
+            const totalSeconds = Math.floor(audioPlayer.duration % 60);
+
+            currentTime.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            duration.textContent = `${totalMinutes}:${totalSeconds}`;
+        });
+
+        audioPlayer.addEventListener('loadedmetadata', function() {
+            const totalMinutes = Math.floor(audioPlayer.duration / 60);
+            const totalSeconds = Math.floor(audioPlayer.duration % 60);
+            duration.textContent = `${totalMinutes}:${totalSeconds}`;
+        });
+    </script>
+</body>
+</html>
